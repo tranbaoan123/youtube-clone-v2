@@ -1,21 +1,27 @@
-import axios from "axios";
+import { useEffect } from "react";
 import "./App.css";
 import CardList from "./components/CardList";
 import Header from "./components/Header";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHomePageVideos } from "./redux/home-page/homePageSlice";
 
 function App() {
-  const fetchHomeData = async () => {
-    const res = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=es&videoCategoryId=17&key=${
-        import.meta.env.VITE_YOUTUBE_API_KEY
-      }`
-    );
-    console.log("check data ", res);
-  };
+  const homeData = useSelector((state) => state.youtube.homeVideoList);
+  const dispatch = useDispatch();
+  const channelIdList =
+    homeData?.items &&
+    homeData?.items.length > 0 &&
+    homeData?.items.map((video) => {
+      return video.snippet.channelId;
+    });
+  const channelIdString =
+    channelIdList && channelIdList.length > 0 && channelIdList.join(",");
+  console.log(channelIdString);
+
   useEffect(() => {
-    fetchHomeData();
+    dispatch(fetchHomePageVideos());
   }, []);
+
   return (
     <>
       <Header />
