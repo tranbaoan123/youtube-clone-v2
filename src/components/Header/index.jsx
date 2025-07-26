@@ -1,6 +1,7 @@
 import { Menu, Youtube } from "lucide-react";
 import SearchBar from "../SearchBar";
 import Drawer from "../Drawer";
+import { Link } from "react-router";
 
 const Header = () => {
   return (
@@ -15,7 +16,7 @@ const Header = () => {
           >
             <Menu className="cursor-pointer" />
           </button>
-          <div className="flex gap-1 cursor-pointer items-center">
+          <Link to={`/`} className="flex gap-1 cursor-pointer items-center">
             <Youtube
               className="text-red-500"
               size={48}
@@ -24,7 +25,7 @@ const Header = () => {
               strokeWidth={1}
             />
             <h3 className="text-2xl">Youtube</h3>
-          </div>
+          </Link>
         </div>
         <SearchBar />
         {/* Extra div to align items */}
