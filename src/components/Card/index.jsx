@@ -1,14 +1,20 @@
-const Card = () => {
+const Card = ({ videoData }) => {
   return (
     <div className="rounded-md overflow-hidden">
       <div className="relative">
         <span className="absolute p-1 bg-[#0c0c0c] rounded-md bottom-1 right-1">
           duration
         </span>
-        <div className="h-[240px] bg-pink-400"></div>
+        <img
+          src={videoData.snippet.thumbnails.standard.url}
+          className="h-[240px] w-full"
+        />
       </div>
       <div className="mt-4 flex gap-2">
-        <div className="w-10 h-10 bg-pink-400 rounded-full flex-none"></div>
+        <img
+          src={videoData.channelThumbnail}
+          className="w-10 h-10 rounded-full flex-none"
+        />
         <div>
           <h2 className="text-2xl">
             THIS THING IS CHASING ME [FNAF Secret of The Mimic Part 1]
