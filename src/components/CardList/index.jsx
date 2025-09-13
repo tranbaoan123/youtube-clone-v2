@@ -2,12 +2,17 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice";
 import { fetchHomeVideoList } from "../../redux/homePageSlice/homePageSlice";
+import Spinner from "../Spinner/index";
 import Card from "../Card";
 
 const CardList = () => {
   const dispatch = useDispatch();
   const homeData = useSelector((state) => state.homePage.homeData);
+  const homeDataLoading = useSelector((state) => state.homePage.isLoading);
   const channelData = useSelector((state) => state.channelInfo.channelData);
+  const channelDataLoading = useSelector(
+    (state) => state.channelInfo.isLoading
+  );
 
   const channelIdString = homeData.items
     ?.map((video) => {
@@ -30,13 +35,16 @@ const CardList = () => {
     homeData.items?.map((video, index) => {
       return { ...video, channelThumbnail: channelThumbnailList[index] };
     });
-  console.log(mergedData);
 
   return (
-    <div className="w-[95%] mx-auto mt-4 grid grid-cols-3 gap-4">
-      {mergedData?.map((video) => {
-        return <Card key={video.id} videoData={video} />;
-      })}
+    <div className="mt-4 grid grid-cols-3 gap-4">
+      {homeDataLoading || channelDataLoading ? (
+        <Spinner />
+      ) : (
+        mergedData?.map((video) => {
+          return <Card key={video.id} videoData={video} />;
+        })
+      )}
     </div>
   );
 };

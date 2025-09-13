@@ -1,5 +1,5 @@
+import { Outlet } from "react-router";
 import "./App.css";
-import CardList from "./components/CardList";
 import Header from "./components/Header";
 
 function App() {
@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <Header />
-      <CardList />
+      <div className="overflow-clip w-[95%] mx-auto">
+        <Outlet />
+      </div>
     </>
   );
 }

@@ -2,12 +2,28 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
+import CardList from "./components/CardList";
 import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import VideoDetail from "./components/VideoDetail/index.jsx";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { index: true, element: <CardList /> },
+      { path: "video/:id", element: <VideoDetail /> },
+    ],
+  },
+  // basueUrl
+  // => localhost:5137/video
+  // => đường link hiện tại + "video" => localhost:5137/auth/video
+]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <RouterProvider router={router} />
     </Provider>
   </StrictMode>
 );
