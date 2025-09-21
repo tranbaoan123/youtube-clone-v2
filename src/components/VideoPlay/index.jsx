@@ -1,9 +1,20 @@
 import { ThumbsUp } from "lucide-react";
+import { useParams } from "react-router";
+import Comment from "../Comment";
 
 const VideoPlay = () => {
+  const param = useParams();
+  console.log(param);
+
   return (
     <div className="w-[70%]">
-      <div className="bg-pink-500  min-h-[450px] rounded-md">01</div>
+      <iframe
+        className="aspect-video object-cover rounded-lg overflow-hidden"
+        title="Youtube player video"
+        do-not-allow="autoplay"
+        allowFullScreen
+        src={`https://www.youtube.com/embed/${param.id}?autoplay=1`}
+      ></iframe>
       <h2 className="text-[32px]">Video Title</h2>
       <div className="flex justify-between">
         <div className="flex gap-3">
@@ -32,6 +43,10 @@ const VideoPlay = () => {
           doloremque quisquam nemo nostrum sit assumenda. Voluptatem delectus ut
           ipsam dolorum assumenda, libero debitis!
         </p>
+      </div>
+      <div>
+        <h3 className="text-lg font-bold">Comments</h3>
+        <Comment />
       </div>
     </div>
   );
