@@ -16,13 +16,14 @@ const VideoPlay = ({ id }) => {
         <Spinner />
       ) : (
         <div className="w-[70%]">
-          <div className="min-h-[450px] rounded-md">
+          <div className="rounded-md">
             {
               <iframe
-                src={`https://www.youtube.com/embed/${videoDetail?.items[0]?.id}?autoplay=1`}
+                src={`https://www.youtube.com/embed/${id}?autoplay=1`}
                 title="Youtube player video"
                 do-not-allow="autoplay"
                 allowFullScreen
+                className="aspect-video"
               ></iframe>
             }
           </div>
