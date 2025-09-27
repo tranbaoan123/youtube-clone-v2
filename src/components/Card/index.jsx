@@ -2,8 +2,6 @@ import { Link } from "react-router";
 import { convertDate, convertDuration } from "../../utils/function";
 
 const Card = ({ videoData }) => {
-  console.log(videoData);
-
   return (
     <Link to={`video/${videoData.id}`}>
       <div className="cursor-pointer rounded-md overflow-hidden hover:scale-105 transition-all">

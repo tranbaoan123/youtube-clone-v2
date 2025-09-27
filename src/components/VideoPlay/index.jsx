@@ -1,10 +1,18 @@
 import { ThumbsUp } from "lucide-react";
 import { useParams } from "react-router";
 import Comment from "../Comment";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchVideoDetail } from "../../redux/videoDetailSlice/videoDetailSlice";
 
 const VideoPlay = () => {
   const param = useParams();
-  console.log(param);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchVideoDetail(param.id));
+  }, [param.id]);
+  const { videoDetail } = useSelector((state) => state.videoDetail);
+  console.log(videoDetail);
 
   return (
     <div className="w-[70%]">
