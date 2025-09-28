@@ -24,7 +24,7 @@ const videoDetailSlice = createSlice({
     builder.addCase(fetchVideoDetail.pending, (state) => {
       // Add user to the state array
       state.isLoading = true;
-      state.videoDetail = [];
+      state.videoDetail = {};
       state.isError = false;
     });
     // Add reducers for additional action types here, and handle loading state as needed
@@ -37,7 +37,7 @@ const videoDetailSlice = createSlice({
     builder.addCase(fetchVideoDetail.rejected, (state) => {
       // Add user to the state array
       state.isLoading = false;
-      state.videoDetail = [];
+      state.videoDetail = {};
       state.isError = true;
     });
   },

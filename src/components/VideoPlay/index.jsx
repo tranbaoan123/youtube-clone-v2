@@ -3,12 +3,14 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchVideoDetail } from "../../redux/videoDetail/videoDetailSlice";
 import Spinner from "../Spinner";
+import Comment from "../Comment";
 const VideoPlay = ({ id }) => {
   const { videoDetail, isLoading } = useSelector((state) => state.videoDetail);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVideoDetail(id));
-  }, [id]);
+  }, []);
+  console.log(videoDetail);
 
   return (
     <>
@@ -27,7 +29,9 @@ const VideoPlay = ({ id }) => {
               ></iframe>
             }
           </div>
-          <h2 className="text-[32px]">Video Title</h2>
+          <h2 className="text-[32px]">
+            {videoDetail?.items && videoDetail?.items[0].snippet?.title}
+          </h2>
           <div className="flex justify-between">
             <div className="flex gap-3">
               <div className="w-12 h-12 rounded-full bg-pink-500"></div>
@@ -50,11 +54,12 @@ const VideoPlay = ({ id }) => {
               <span>3 days ago</span>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-              facere molestias! Possimus totam explicabo perspiciatis quam,
-              doloremque quisquam nemo nostrum sit assumenda. Voluptatem
-              delectus ut ipsam dolorum assumenda, libero debitis!
+              {videoDetail?.items && videoDetail?.items[0].snippet?.description}
             </p>
+          </div>
+          <div>
+            <h2 className="text-lg font-bold">Comments</h2>
+            <Comment />
           </div>
         </div>
       )}
