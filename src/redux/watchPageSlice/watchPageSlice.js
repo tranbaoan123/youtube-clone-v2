@@ -3,7 +3,6 @@ import api from "../../apis";
 const initialState = {
   isLoading: false,
   videoDetailData: {},
-  channelThumbnail: "",
   isError: false,
 };
 export const fetchVideoDetailData = createAsyncThunk(

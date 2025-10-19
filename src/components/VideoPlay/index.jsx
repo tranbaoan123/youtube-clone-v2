@@ -2,18 +2,18 @@ import { ThumbsUp } from "lucide-react";
 import { useParams } from "react-router";
 import Comment from "../Comment";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchVideoDetail } from "../../redux/videoDetailSlice/videoDetailSlice";
+import { useEffect, useState } from "react";
+import { fetchVideoDetailData } from "../../redux/watchPageSlice/watchPageSlice";
 
 const VideoPlay = () => {
   const param = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchVideoDetail(param.id));
+    dispatch(fetchVideoDetailData(param.id));
   }, [param.id]);
-  const { videoDetail } = useSelector((state) => state.videoDetail);
-  console.log(videoDetail);
-
+  const videoDetails = useSelector((state) => state.watchPage.videoDetailData);
+  const videoInnerDetails = videoDetails?.items && videoDetails?.items[0];
+  const [isShowDescription, setIsShowDescription] = useState(false);
   return (
     <div className="w-[70%]">
       <iframe
@@ -23,7 +23,7 @@ const VideoPlay = () => {
         allowFullScreen
         src={`https://www.youtube.com/embed/${param.id}?autoplay=1`}
       ></iframe>
-      <h2 className="text-[32px]">Video Title</h2>
+      <h2 className="text-[32px]">{videoInnerDetails?.snippet?.title}</h2>
       <div className="flex justify-between">
         <div className="flex gap-3">
           <div className="w-12 h-12 rounded-full bg-pink-500"></div>
@@ -45,12 +45,16 @@ const VideoPlay = () => {
           <span>38K views</span>
           <span>3 days ago</span>
         </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-          facere molestias! Possimus totam explicabo perspiciatis quam,
-          doloremque quisquam nemo nostrum sit assumenda. Voluptatem delectus ut
-          ipsam dolorum assumenda, libero debitis!
+
+        <p className="whitespace-pre-line inline">
+          {isShowDescription
+            ? videoInnerDetails?.snippet?.description
+            : videoInnerDetails?.snippet?.description.substring(0, 101) + "..."}
         </p>
+
+        <button onClick={() => setIsShowDescription(!isShowDescription)}>
+          {isShowDescription ? "Hide" : "Show more"}
+        </button>
       </div>
       <div>
         <h3 className="text-lg font-bold">Comments</h3>

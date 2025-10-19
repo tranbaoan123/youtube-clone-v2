@@ -26,7 +26,6 @@ const CardList = () => {
   useEffect(() => {
     dispatch(fetchChannelList(channelIdString));
   }, [channelIdString]);
-  // Trích dữ liệu từ channelData lấy ra mỗi thumbnail
   const channelThumbnailList = channelData.items?.map((channel) => {
     return channel.snippet.thumbnails.default.url;
   });
