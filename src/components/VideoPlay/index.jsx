@@ -4,13 +4,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchVideoDetail } from "../../redux/videoDetail/videoDetailSlice";
 import Spinner from "../Spinner";
 import Comment from "../Comment";
+import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice";
 const VideoPlay = ({ id }) => {
   const { videoDetail, isLoading } = useSelector((state) => state.videoDetail);
+  const { channelData } = useSelector((state) => state.channelInfo);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVideoDetail(id));
   }, []);
-  console.log(videoDetail);
+  useEffect(() => {
+    if (videoDetail?.items) {
+      console.log(videoDetail?.items[0]?.snippet?.channelId);
+
+      dispatch(fetchChannelList(videoDetail?.items[0]?.snippet?.channelId));
+    }
+  }, [videoDetail?.items]);
+  console.log(channelData);
 
   return (
     <>

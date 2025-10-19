@@ -26,14 +26,19 @@ const CardList = () => {
   useEffect(() => {
     dispatch(fetchChannelList(channelIdString));
   }, [channelIdString]);
-  // Trích dữ liệu từ channelData lấy ra mỗi thumbnail
-  const channelThumbnailList = channelData.items?.map((channel) => {
-    return channel.snippet.thumbnails.default.url;
-  });
+
   const mergedData =
-    channelThumbnailList &&
-    homeData.items?.map((video, index) => {
-      return { ...video, channelThumbnail: channelThumbnailList[index] };
+    channelData.items &&
+    homeData.items?.map((video) => {
+      const foundChannel = channelData?.items.find((channel) => {
+        return channel?.id === video?.snippet?.channelId;
+      });
+      if (foundChannel) {
+        return {
+          ...video,
+          channelThumbnail: foundChannel?.snippet?.thumbnails?.default?.url,
+        };
+      }
     });
 
   return (
