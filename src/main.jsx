@@ -7,6 +7,7 @@ import { store } from "./redux/store.js";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import VideoDetail from "./components/VideoDetail/index.jsx";
+import ChannelInfo from "./components/Channel-Info/index.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <CardList /> },
       { path: "video/:id", element: <VideoDetail /> },
+      { path: "channel/:id", element: <ChannelInfo /> },
     ],
   },
   // basueUrl

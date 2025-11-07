@@ -1,19 +1,29 @@
 import { ThumbsUp } from "lucide-react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import Comment from "../Comment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchVideoDetailData } from "../../redux/watchPageSlice/watchPageSlice";
+import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice";
 
 const VideoPlay = () => {
   const param = useParams();
   const dispatch = useDispatch();
+
+  const videoDetails = useSelector((state) => state.watchPage.videoDetailData);
+  const videoInnerDetails = videoDetails?.items && videoDetails?.items[0];
+  const channelInfo = useSelector((state) => state.channelInfo.channelData);
+  const [isShowDescription, setIsShowDescription] = useState(false);
   useEffect(() => {
     dispatch(fetchVideoDetailData(param.id));
   }, [param.id]);
-  const videoDetails = useSelector((state) => state.watchPage.videoDetailData);
-  const videoInnerDetails = videoDetails?.items && videoDetails?.items[0];
-  const [isShowDescription, setIsShowDescription] = useState(false);
+  useEffect(() => {
+    if (videoDetails?.items) {
+      dispatch(fetchChannelList(videoDetails?.items[0]?.snippet?.channelId));
+    }
+  }, [videoDetails?.items]);
+  console.log(channelInfo);
+
   return (
     <div className="w-[70%]">
       <iframe
@@ -26,10 +36,29 @@ const VideoPlay = () => {
       <h2 className="text-[32px]">{videoInnerDetails?.snippet?.title}</h2>
       <div className="flex justify-between">
         <div className="flex gap-3">
-          <div className="w-12 h-12 rounded-full bg-pink-500"></div>
+          <Link
+            to={`/channel/${channelInfo?.items && channelInfo?.items[0]?.id}`}
+          >
+            <div className="w-12 h-12">
+              <img
+                src={
+                  channelInfo?.items &&
+                  channelInfo?.items[0]?.snippet?.thumbnails?.default?.url
+                }
+                className="rounded-full"
+                alt="avatar"
+              />
+            </div>
+          </Link>
           <div>
-            <h3>Author</h3>
-            <p>Subcribers Counts</p>
+            <h3>
+              {channelInfo?.items && channelInfo?.items[0]?.snippet?.title}
+            </h3>
+            <p>
+              {" "}
+              {channelInfo?.items &&
+                channelInfo?.items[0]?.statistics?.subscriberCount}
+            </p>
           </div>
         </div>
         <button className="flex items-center px-2 py-4 gap-2 bg-gray-800 rounded-full">

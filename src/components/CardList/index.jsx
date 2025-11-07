@@ -26,13 +26,19 @@ const CardList = () => {
   useEffect(() => {
     dispatch(fetchChannelList(channelIdString));
   }, [channelIdString]);
-  const channelThumbnailList = channelData.items?.map((channel) => {
-    return channel.snippet.thumbnails.default.url;
-  });
+
   const mergedData =
-    channelThumbnailList &&
-    homeData.items?.map((video, index) => {
-      return { ...video, channelThumbnail: channelThumbnailList[index] };
+    channelData.items &&
+    homeData.items?.map((video) => {
+      const foundChannel = channelData.items.find(
+        (channel) => channel?.id === video?.snippet?.channelId
+      );
+      if (foundChannel) {
+        return {
+          ...video,
+          channelThumbnail: foundChannel.snippet.thumbnails.default.url,
+        };
+      }
     });
 
   return (
@@ -41,7 +47,7 @@ const CardList = () => {
         <Spinner />
       ) : (
         mergedData?.map((video) => {
-          return <Card key={video.id} videoData={video} />;
+          return <Card key={video?.id} videoData={video} />;
         })
       )}
     </div>
