@@ -43,9 +43,9 @@ const ChannelInfo = () => {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4 grid-cols-1 mt-4">
-        <Card />
-        <Card />
-        <Card />
+        <Card isPlaylist={true} />
+        <Card isPlaylist={true} />
+        <Card isPlaylist={true} />
         <Card />
       </div>
     </div>
