@@ -9,6 +9,7 @@ import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice"
 const VideoPlay = () => {
   const param = useParams();
   const dispatch = useDispatch();
+  console.log(param);
 
   const videoDetails = useSelector((state) => state.watchPage.videoDetailData);
   const videoInnerDetails = videoDetails?.items && videoDetails?.items[0];
@@ -16,12 +17,12 @@ const VideoPlay = () => {
   const [isShowDescription, setIsShowDescription] = useState(false);
   useEffect(() => {
     dispatch(fetchVideoDetailData(param.id));
-  }, [param.id]);
+  }, [param.id, dispatch]);
   useEffect(() => {
     if (videoDetails?.items) {
       dispatch(fetchChannelList(videoDetails?.items[0]?.snippet?.channelId));
     }
-  }, [videoDetails?.items]);
+  }, [videoDetails?.items, dispatch]);
   console.log(channelInfo);
 
   return (
