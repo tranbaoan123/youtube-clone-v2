@@ -4,6 +4,7 @@ import { List } from "lucide-react";
 
 const Card = ({ videoData, isChannel = false, isPlaylist = false }) => {
   const videoId = videoData?.contentDetails?.upload?.videoId;
+  console.log(videoData);
 
   return (
     <Link
@@ -11,7 +12,7 @@ const Card = ({ videoData, isChannel = false, isPlaylist = false }) => {
     >
       <div className="cursor-pointer rounded-md overflow-hidden hover:scale-105 transition-all">
         <div className="relative">
-          {isChannel ? (
+          {isPlaylist ? (
             <span className="absolute p-1 bg-[#0c0c0c] rounded-md bottom-1 right-1 flex items-center gap-1">
               <span>
                 <List />

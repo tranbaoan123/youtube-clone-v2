@@ -12,6 +12,7 @@ const ChannelInfo = () => {
   const param = useParams();
   const [showModal, setShowModal] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   useEffect(() => {
     dispatch(fetchChannelList(param.id));
   }, []);
@@ -24,10 +25,18 @@ const ChannelInfo = () => {
     );
     setVideos(response.data.items);
   };
+  const fetchChannelPlaylists = async () => {
+    const response = await api.get(
+      `playlists?part=snippet%2CcontentDetails&channelId=${
+        param.id
+      }&maxResults=10&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`
+    );
+    setPlaylists(response.data.items);
+  };
   useEffect(() => {
     fetchVideosChannelInfo();
+    fetchChannelPlaylists();
   }, [param.id]);
-  console.log(videos);
 
   return (
     <div className="relative">
@@ -102,10 +111,24 @@ const ChannelInfo = () => {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4 grid-cols-1 mt-4">
-        {videos.length > 0 &&
-          videos.map((video) => {
-            return <Card isChannel={false} key={video.id} videoData={video} />;
-          })}
+        {activeTab === "videos"
+          ? videos.length > 0 &&
+            videos.map((video) => {
+              return (
+                <Card isChannel={false} key={video.id} videoData={video} />
+              );
+            })
+          : playlists.length > 0 &&
+            playlists.map((playlist) => {
+              return (
+                <Card
+                  isChannel={false}
+                  key={playlist.id}
+                  videoData={playlist}
+                  isPlaylist={true}
+                />
+              );
+            })}
       </div>
     </div>
   );
