@@ -22,7 +22,6 @@ const VideoPlay = () => {
       dispatch(fetchChannelList(videoDetails?.items[0]?.snippet?.channelId));
     }
   }, [videoDetails?.items]);
-  console.log(channelInfo);
 
   return (
     <div className="w-[70%]">
