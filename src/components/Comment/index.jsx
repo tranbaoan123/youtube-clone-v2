@@ -1,21 +1,26 @@
-import { ThumbsUp } from "lucide-react";
-const Comment = () => {
+import { useEffect, useState } from "react";
+import api from "../../apis";
+import CommentBody from "../CommentBody";
+import CommentCard from "../CommentCard";
+const Comment = ({ videoId }) => {
+  const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+  const [commentList, setCommentList] = useState([]);
+  const fetchComments = async () => {
+    const response = await api.get(
+      `commentThreads?part=snippet%2Creplies&maxResults=20&videoId=${videoId}&key=${API_KEY}`
+    );
+    setCommentList(response.data.items);
+  };
+  useEffect(() => {
+    fetchComments();
+  }, []);
   return (
-    <div className="flex items-center gap-2">
-      <div>
-        <div className="w-8 h-8 bg-pink-500 rounded-full"></div>
-      </div>
-      <div>
-        <p>@asdhas</p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum
-          corrupti fugit quae.
-        </p>
-        <div className="flex items-center gap-1">
-          <ThumbsUp size={16} />
-          <span>0</span>
-        </div>
-      </div>
+    <div>
+      <h3 className="text-lg font-bold">Comments</h3>
+      {commentList.length > 0 &&
+        commentList.map((comment) => {
+          return <CommentCard key={comment.id} commentData={comment} />;
+        })}
     </div>
   );
 };
