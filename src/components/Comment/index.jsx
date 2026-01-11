@@ -21,6 +21,7 @@ const Comment = ({ videoId }) => {
         commentList.map((comment) => {
           return <CommentCard key={comment.id} commentData={comment} />;
         })}
+      <button className="w-full p-2">Load more</button>
     </div>
   );
 };
