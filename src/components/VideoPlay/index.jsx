@@ -84,10 +84,7 @@ const VideoPlay = () => {
           {isShowDescription ? "Hide" : "Show more"}
         </button>
       </div>
-      <div>
-        <h3 className="text-lg font-bold">Comments</h3>
-        <Comment />
-      </div>
+      <Comment videoId={param.id} />
     </div>
   );
 };
