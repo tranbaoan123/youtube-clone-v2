@@ -1,25 +1,14 @@
-import { ThumbsUp } from "lucide-react";
+import CommentItem from "../CommentItem";
 
 const CommentBody = ({ commentData }) => {
-  console.log(commentData);
-  const avatar =
-    commentData.snippet.topLevelComment.snippet.authorProfileImageUrl;
-  const name = commentData.snippet.topLevelComment.snippet.authorDisplayName;
-  const textDisplay = commentData.snippet.topLevelComment.snippet.textDisplay;
-  const likeCount = commentData.snippet.topLevelComment.snippet.likeCount;
+  console.log(commentData.replies);
   return (
     <div className="flex items-center gap-2">
-      <div>
-        <img className="w-8 h-8 rounded-full" src={avatar} />
-      </div>
-      <div>
-        <p>{name}</p>
-        <p>{textDisplay}</p>
-        <div className="flex items-center gap-1">
-          <ThumbsUp size={16} />
-          <span>{likeCount}</span>
-        </div>
-      </div>
+      <CommentItem commentData={commentData} />
+      {commentData?.replies?.comments.length > 0 &&
+        commentData?.replies?.comments.map((comment) => {
+          return <CommentItem key={comment.id} commentData={comment} />;
+        })}
     </div>
   );
 };
