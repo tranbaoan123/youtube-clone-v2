@@ -1,9 +1,12 @@
 import { ThumbsUp } from "lucide-react";
+import { Link } from "react-router";
 
 const CommentItem = ({ commentData }) => {
   return (
     <div className="flex gap-2 items-center justify-center">
-      <div>
+      <Link
+        to={`/channel/${commentData.snippet?.authorChannelId?.value || commentData.snippet.channelId}`}
+      >
         <img
           className="w-8 h-8 rounded-full"
           src={
@@ -12,7 +15,7 @@ const CommentItem = ({ commentData }) => {
             commentData.snippet.authorProfileImageUrl
           }
         />
-      </div>
+      </Link>
       <div>
         <p>
           {commentData.snippet.topLevelComment?.snippet.authorDisplayName ||
