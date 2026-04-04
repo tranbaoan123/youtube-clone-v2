@@ -7,9 +7,9 @@ const initialState = {
 };
 export const fetchHomeVideoList = createAsyncThunk(
   "homepage/fetchHomeVideoList",
-  async () => {
+  async (categoryId) => {
     const response = await api.get(
-      `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=us&videoCategoryId=17&key=${
+      `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=us&${categoryId != null ? `videoCategoryId=${categoryId}` : ""}&key=${
         import.meta.env.VITE_YOUTUBE_API_KEY
       }`,
     );

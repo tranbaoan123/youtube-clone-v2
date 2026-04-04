@@ -4,14 +4,16 @@ import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice"
 import { fetchHomeVideoList } from "../../redux/homePageSlice/homePageSlice";
 import Spinner from "../Spinner/index";
 import Card from "../Card";
+import { useOutletContext } from "react-router";
 
 const CardList = () => {
   const dispatch = useDispatch();
   const homeData = useSelector((state) => state.homePage.homeData);
   const homeDataLoading = useSelector((state) => state.homePage.isLoading);
   const channelData = useSelector((state) => state.channelInfo.channelData);
+  const { categoryId } = useOutletContext();
   const channelDataLoading = useSelector(
-    (state) => state.channelInfo.isLoading
+    (state) => state.channelInfo.isLoading,
   );
 
   const channelIdString = homeData.items
@@ -20,18 +22,18 @@ const CardList = () => {
     })
     .join(",");
   useEffect(() => {
-    dispatch(fetchHomeVideoList());
-  }, []);
+    dispatch(fetchHomeVideoList(categoryId));
+  }, [categoryId]);
 
   useEffect(() => {
     dispatch(fetchChannelList(channelIdString));
-  }, [channelIdString]);
+  }, [channelIdString, categoryId]);
 
   const mergedData =
     channelData.items &&
     homeData.items?.map((video) => {
       const foundChannel = channelData.items.find(
-        (channel) => channel?.id === video?.snippet?.channelId
+        (channel) => channel?.id === video?.snippet?.channelId,
       );
       if (foundChannel) {
         return {
@@ -41,13 +43,15 @@ const CardList = () => {
       }
     });
 
+  console.log(categoryId);
+
   return (
     <div className="mt-4 grid grid-cols-3 gap-4">
       {homeDataLoading || channelDataLoading ? (
         <Spinner />
       ) : (
-        mergedData?.map((video) => {
-          return <Card key={video?.id} videoData={video} />;
+        mergedData?.map((video, index) => {
+          return <Card key={index} videoData={video} />;
         })
       )}
     </div>
