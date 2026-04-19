@@ -12,7 +12,6 @@ const Comment = ({ videoId }) => {
         import.meta.env.VITE_YOUTUBE_API_KEY
       }`,
     );
-    console.log(response.data);
 
     setCommentList((prev) => {
       return {

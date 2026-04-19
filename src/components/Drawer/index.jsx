@@ -12,8 +12,69 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import DrawerItem from "../DrawerItem";
+import { useEffect, useState } from "react";
+import api from "../../apis";
 
 const Drawer = () => {
+  const [categories, setCategories] = useState([]);
+
+  const categoryItems = [
+    {
+      icon: <Music />,
+      text: "Music",
+      filterTag: "music",
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Music";
+      })?.id,
+    },
+    {
+      icon: <Volleyball />,
+      text: "Sports",
+      filterTag: "sports",
+      categoryId: null,
+    },
+    {
+      icon: <Gamepad2 />,
+      text: "Gaming",
+      filterTag: "gaming",
+      categoryId: null,
+    },
+    {
+      icon: <Popcorn />,
+      text: "Movies",
+      filterTag: "movies",
+      categoryId: null,
+    },
+    {
+      icon: <Shirt />,
+      text: "Howto & Style",
+      filterTag: "fashion",
+      categoryId: null,
+    },
+    {
+      icon: <Newspaper />,
+      text: "News",
+      filterTag: "news",
+      categoryId: null,
+    },
+    {
+      icon: <Lightbulb />,
+      text: "Education",
+      filterTag: "education",
+      categoryId: null,
+    },
+  ];
+
+  //
+  const fetchCategories = async () => {
+    const response = await api.get(
+      `videoCategories?part=snippet&regionCode=us&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+    );
+    setCategories(response.data.items);
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   return (
     <>
       {/* drawer init and show */}
@@ -79,13 +140,15 @@ const Drawer = () => {
         </div>
         <div className="py-5 overflow-y-auto">
           <ul className="space-y-2 font-medium">
-            <DrawerItem title={"Music"} icon={<Music />} />
-            <DrawerItem title={"Sports"} icon={<Volleyball />} />
-            <DrawerItem title={"Gaming"} icon={<Gamepad2 />} />
-            <DrawerItem title={"Movies"} icon={<Popcorn />} />
-            <DrawerItem title={"Fashion"} icon={<Newspaper />} />
-            <DrawerItem title={"News"} icon={<Shirt />} />
-            <DrawerItem title={"Course"} icon={<Lightbulb />} />
+            {categoryItems.map((category, index) => {
+              return (
+                <DrawerItem
+                  key={index}
+                  title={category.categoryId}
+                  icon={category.icon}
+                />
+              );
+            })}
           </ul>
         </div>
       </div>

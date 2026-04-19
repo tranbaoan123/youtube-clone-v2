@@ -12,7 +12,7 @@ const Playlist = () => {
     const response = await api.get(
       `playlists?part=snippet%2CcontentDetails&id=${params.id}&key=${
         import.meta.env.VITE_YOUTUBE_API_KEY
-      }`
+      }`,
     );
     setPlaylist(response.data.items[0]);
   };
@@ -20,10 +20,9 @@ const Playlist = () => {
     const response = await api.get(
       `playlistItems?part=snippet%2CcontentDetails&maxResults=8&playlistId=${
         params.id
-      }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`
+      }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
     );
     setPlaylistItems(response.data.items);
-    console.log(response.data.items);
   };
   useEffect(() => {
     fetchPlaylistInfo();

@@ -1,8 +1,6 @@
 import { Link } from "react-router";
 
 const VideoCardPlaylist = ({ data }) => {
-  console.log(data);
-
   return (
     <Link to={`/video/${data?.contentDetails?.videoId}`}>
       <div className="relative">
