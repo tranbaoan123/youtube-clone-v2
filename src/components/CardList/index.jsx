@@ -35,6 +35,7 @@ const CardList = () => {
       const foundChannel = channelData.items.find(
         (channel) => channel?.id === video?.snippet?.channelId,
       );
+
       if (foundChannel) {
         return {
           ...video,
@@ -42,9 +43,7 @@ const CardList = () => {
         };
       }
     });
-
-  console.log(categoryId);
-
+  console.log(channelData);
   return (
     <div className="mt-4 grid grid-cols-3 gap-4">
       {homeDataLoading || channelDataLoading ? (

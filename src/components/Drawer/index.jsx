@@ -143,6 +143,8 @@ const Drawer = ({ filter, setFilter, setCategoryId }) => {
             filter={filter}
             filterTag={"home"}
             setFilter={setFilter}
+            categoryId={null}
+            setCategoryId={setCategoryId}
           />
           <hr />
           {categoriesLinks.map((category) => {

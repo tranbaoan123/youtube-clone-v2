@@ -5,7 +5,7 @@ import { useState } from "react";
 
 function App() {
   const [filter, setFilter] = useState("home");
-  const [categoryId, setCategoryId] = useState(null);
+  const [categoryId, setCategoryId] = useState("");
   return (
     <>
       <h1>{categoryId}</h1>
