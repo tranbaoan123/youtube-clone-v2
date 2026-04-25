@@ -10,13 +10,18 @@ import {
   Volleyball,
   Youtube,
 } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import DrawerItem from "../DrawerItem";
 import api from "../../apis";
 import { useEffect, useState } from "react";
 
 const Drawer = ({ filter, setFilter, setCategoryId }) => {
   const [categoriesData, setCategoriesData] = useState([]);
+  const navigate = useNavigate();
+  const navigateHome = () => {
+    setCategoryId(null);
+    navigate("/");
+  };
   const categoriesLinks = [
     {
       icon: <Music />,
@@ -158,18 +163,19 @@ const Drawer = ({ filter, setFilter, setCategoryId }) => {
         <hr />
       </div>
 
-      <Link to={"/"}>
-        <div className="flex gap-1 cursor-pointer items-center">
-          <Youtube
-            className="text-red-500"
-            size={48}
-            fill="red"
-            stroke="black"
-            strokeWidth={1}
-          />
-          <h3 className="text-2xl">Youtube</h3>
-        </div>
-      </Link>
+      <div
+        className="flex gap-1 cursor-pointer items-center"
+        onClick={navigateHome}
+      >
+        <Youtube
+          className="text-red-500"
+          size={48}
+          fill="red"
+          stroke="black"
+          strokeWidth={1}
+        />
+        <h3 className="text-2xl">Youtube</h3>
+      </div>
     </div>
   );
 };
