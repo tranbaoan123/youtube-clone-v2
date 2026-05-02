@@ -4,16 +4,17 @@ import { fetchChannelList } from "../../redux/channelInfoSlice/channelInfoSlice"
 import { fetchHomeVideoList } from "../../redux/homePageSlice/homePageSlice";
 import Spinner from "../Spinner/index";
 import Card from "../Card";
+import { useOutletContext } from "react-router";
 
 const CardList = () => {
   const dispatch = useDispatch();
+  const value = useOutletContext();
   const homeData = useSelector((state) => state.homePage.homeData);
   const homeDataLoading = useSelector((state) => state.homePage.isLoading);
   const channelData = useSelector((state) => state.channelInfo.channelData);
   const channelDataLoading = useSelector(
-    (state) => state.channelInfo.isLoading
+    (state) => state.channelInfo.isLoading,
   );
-
   const channelIdString = homeData.items
     ?.map((video) => {
       return video.snippet.channelId;
@@ -31,7 +32,7 @@ const CardList = () => {
     channelData.items &&
     homeData.items?.map((video) => {
       const foundChannel = channelData.items.find(
-        (channel) => channel?.id === video?.snippet?.channelId
+        (channel) => channel?.id === video?.snippet?.channelId,
       );
       if (foundChannel) {
         return {
@@ -40,6 +41,8 @@ const CardList = () => {
         };
       }
     });
+
+  console.log(value);
 
   return (
     <div className="mt-4 grid grid-cols-3 gap-4">

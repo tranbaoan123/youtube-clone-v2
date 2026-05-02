@@ -15,9 +15,9 @@ import DrawerItem from "../DrawerItem";
 import { useEffect, useState } from "react";
 import api from "../../apis";
 
-const Drawer = () => {
+const Drawer = ({ setCategoryId }) => {
   const [categories, setCategories] = useState([]);
-
+  const [filter, setFilter] = useState("home");
   const categoryItems = [
     {
       icon: <Music />,
@@ -31,37 +31,49 @@ const Drawer = () => {
       icon: <Volleyball />,
       text: "Sports",
       filterTag: "sports",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Sports";
+      })?.id,
     },
     {
       icon: <Gamepad2 />,
       text: "Gaming",
       filterTag: "gaming",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Gaming";
+      })?.id,
     },
     {
       icon: <Popcorn />,
       text: "Movies",
       filterTag: "movies",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Movies";
+      })?.id,
     },
     {
       icon: <Shirt />,
       text: "Howto & Style",
       filterTag: "fashion",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Howto & Style";
+      })?.id,
     },
     {
       icon: <Newspaper />,
-      text: "News",
+      text: "News & Politics",
       filterTag: "news",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "News & Politics";
+      })?.id,
     },
     {
       icon: <Lightbulb />,
       text: "Education",
       filterTag: "education",
-      categoryId: null,
+      categoryId: categories.find((category) => {
+        return category?.snippet?.title === "Education";
+      })?.id,
     },
   ];
 
@@ -109,7 +121,15 @@ const Drawer = () => {
         aria-labelledby="drawer-navigation-label"
       >
         <ul>
-          <DrawerItem title={"Home"} icon={<Home />} />
+          <DrawerItem
+            title={"Home"}
+            icon={<Home />}
+            filterTag={"home"}
+            filter={filter}
+            setFilter={setFilter}
+            categoryChildId={null}
+            setCategoryId={setCategoryId}
+          />
         </ul>
         <div className="border-b border-default pb-4 flex items-center">
           <button
@@ -144,8 +164,13 @@ const Drawer = () => {
               return (
                 <DrawerItem
                   key={index}
-                  title={category.categoryId}
+                  title={category.text}
                   icon={category.icon}
+                  filterTag={category.filterTag}
+                  categoryChildId={category.categoryId}
+                  setCategoryId={setCategoryId}
+                  filter={filter}
+                  setFilter={setFilter}
                 />
               );
             })}
