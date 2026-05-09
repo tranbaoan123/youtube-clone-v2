@@ -2,14 +2,17 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../apis";
 const initialState = {
   isLoading: false,
-  homeData: {},
-  isError: false,
+  homeData: {
+    items: [],
+    nextPageToken: null,
+  },
+  isError: "",
 };
 export const fetchHomeVideoList = createAsyncThunk(
   "homepage/fetchHomeVideoList",
-  async (categoryId) => {
+  async ({ categoryId, pageToken }) => {
     const response = await api.get(
-      `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=us&${categoryId !== "" ? `videoCategoryId=${categoryId}` : ""}&key=${
+      `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=5&regionCode=us&${categoryId !== "" ? `videoCategoryId=${categoryId}` : ""}${pageToken ? `pageToken=${pageToken}` : ""}&key=${
         import.meta.env.VITE_YOUTUBE_API_KEY
       }`,
     );
@@ -24,21 +27,27 @@ const homePageSlice = createSlice({
     builder.addCase(fetchHomeVideoList.pending, (state) => {
       // Add user to the state array
       state.isLoading = true;
-      state.homeData = [];
       state.isError = false;
     });
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchHomeVideoList.fulfilled, (state, action) => {
       // Add user to the state array
       state.isLoading = false;
-      state.homeData = action.payload;
-      state.isError = false;
+      state.homeData = {
+        items: [...state.homeData.items, ...action.payload.items],
+        nextPageToken: action.payload.nextPageToken,
+      };
+
+      state.isError = "";
     });
-    builder.addCase(fetchHomeVideoList.rejected, (state) => {
+    builder.addCase(fetchHomeVideoList.rejected, (state, action) => {
       // Add user to the state array
       state.isLoading = false;
-      state.homeData = [];
-      state.isError = true;
+      state.homeData = {
+        items: [],
+        nextPageToken: null,
+      };
+      state.isError = action.error.message;
     });
   },
 });

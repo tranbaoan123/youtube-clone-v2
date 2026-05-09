@@ -3,7 +3,7 @@ import api from "../../apis";
 const initialState = {
   isLoading: false,
   channelData: {},
-  isError: false,
+  isError: "",
 };
 export const fetchChannelList = createAsyncThunk(
   "homepage/fetchChannelList",
@@ -11,10 +11,10 @@ export const fetchChannelList = createAsyncThunk(
     const response = await api.get(
       `channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelIdString}&key=${
         import.meta.env.VITE_YOUTUBE_API_KEY
-      }`
+      }`,
     );
     return response.data;
-  }
+  },
 );
 const channelInfoSlice = createSlice({
   name: "channelInfo",
@@ -25,20 +25,20 @@ const channelInfoSlice = createSlice({
       // Add user to the state array
       state.isLoading = true;
       state.channelData = [];
-      state.isError = false;
+      state.isError = "";
     });
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchChannelList.fulfilled, (state, action) => {
       // Add user to the state array
       state.isLoading = false;
       state.channelData = action.payload;
-      state.isError = false;
+      state.isError = "";
     });
-    builder.addCase(fetchChannelList.rejected, (state) => {
+    builder.addCase(fetchChannelList.rejected, (state, action) => {
       // Add user to the state array
       state.isLoading = false;
       state.channelData = [];
-      state.isError = true;
+      state.isError = action.error.message;
     });
   },
 });
