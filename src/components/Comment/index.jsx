@@ -7,19 +7,23 @@ const Comment = ({ videoId }) => {
     nextPageToken: null,
   });
   const fetchCommentList = async () => {
-    const response = await api.get(
-      `commentThreads?part=snippet%2Creplies&maxResults=10&videoId=${videoId}${commentList.nextPageToken ? `&pageToken=${commentList.nextPageToken}` : ""}&key=${
-        import.meta.env.VITE_YOUTUBE_API_KEY
-      }`,
-    );
+    try {
+      const response = await api.get(
+        `commentThreads?part=snippet%2Creplies&maxResults=10&videoId=${videoId}${commentList.nextPageToken ? `&pageToken=${commentList.nextPageToken}` : ""}&key=${
+          import.meta.env.VITE_YOUTUBE_API_KEY
+        }`,
+      );
 
-    setCommentList((prev) => {
-      return {
-        data: [...prev.data, ...response.data.items],
-        nextPageToken: response.data.nextPageToken,
-      };
-    }); // cho 1 hàm callback để truy xuất lại vào state trước đó (previous state)
-    // reference
+      setCommentList((prev) => {
+        return {
+          data: [...prev.data, ...response.data.items],
+          nextPageToken: response.data.nextPageToken,
+        };
+      }); // cho 1 hàm callback để truy xuất lại vào state trước đó (previous state)
+      // reference
+    } catch (error) {
+      console.log("Error fetching data ", error);
+    }
   };
   useEffect(() => {
     fetchCommentList();
