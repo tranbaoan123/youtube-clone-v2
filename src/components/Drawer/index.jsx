@@ -10,7 +10,7 @@ import {
   Volleyball,
   Youtube,
 } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import DrawerItem from "../DrawerItem";
 import { useEffect, useState } from "react";
 import api from "../../apis";
@@ -18,6 +18,11 @@ import api from "../../apis";
 const Drawer = ({ setCategoryId }) => {
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState("home");
+  const navigate = useNavigate();
+  const navigateHome = () => {
+    navigate("/");
+    setCategoryId(null);
+  };
   const categoryItems = [
     {
       icon: <Music />,
@@ -100,7 +105,7 @@ const Drawer = ({ setCategoryId }) => {
         >
           <Menu />
         </button>
-        <Link to={"/"}>
+        <div onClick={navigateHome}>
           <div className="flex items-center gap-1 relative z-50">
             <Youtube
               size={48}
@@ -111,7 +116,7 @@ const Drawer = ({ setCategoryId }) => {
             />
             <span className="text-xl">Youtube</span>
           </div>
-        </Link>
+        </div>
       </div>
       {/* drawer component */}
       <div

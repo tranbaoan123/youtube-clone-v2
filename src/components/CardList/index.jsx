@@ -8,7 +8,7 @@ import { useOutletContext } from "react-router";
 
 const CardList = () => {
   const dispatch = useDispatch();
-  const value = useOutletContext();
+  const { categoryId } = useOutletContext();
   const homeData = useSelector((state) => state.homePage.homeData);
   const homeDataLoading = useSelector((state) => state.homePage.isLoading);
   const channelData = useSelector((state) => state.channelInfo.channelData);
@@ -21,8 +21,8 @@ const CardList = () => {
     })
     .join(",");
   useEffect(() => {
-    dispatch(fetchHomeVideoList());
-  }, []);
+    dispatch(fetchHomeVideoList({ categoryId }));
+  }, [categoryId]);
 
   useEffect(() => {
     dispatch(fetchChannelList(channelIdString));
@@ -41,8 +41,7 @@ const CardList = () => {
         };
       }
     });
-
-  console.log(value);
+  console.log(categoryId);
 
   return (
     <div className="mt-4 grid grid-cols-3 gap-4">

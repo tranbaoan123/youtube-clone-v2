@@ -8,7 +8,6 @@ function App() {
   const [categoryId, setCategoryId] = useState(null);
   return (
     <>
-      {categoryId}
       <Header setCategoryId={setCategoryId} />
       <div className="overflow-clip w-[95%] mx-auto">
         <Outlet context={{ categoryId }} />
