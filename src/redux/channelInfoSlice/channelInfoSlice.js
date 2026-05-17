@@ -7,13 +7,19 @@ const initialState = {
 };
 export const fetchChannelList = createAsyncThunk(
   "homepage/fetchChannelList",
-  async (channelIdString) => {
-    const response = await api.get(
-      `channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelIdString}&key=${
-        import.meta.env.VITE_YOUTUBE_API_KEY
-      }`,
-    );
-    return response.data;
+  async ({ channelIdString }, thunkAPI) => {
+    try {
+      const response = await api.get(
+        `channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelIdString}&key=${
+          import.meta.env.VITE_YOUTUBE_API_KEY
+        }`,
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error?.message || "Error with loading data!";
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
   },
 );
 const channelInfoSlice = createSlice({
@@ -24,8 +30,6 @@ const channelInfoSlice = createSlice({
     builder.addCase(fetchChannelList.pending, (state) => {
       // Add user to the state array
       state.isLoading = true;
-      state.channelData = [];
-      state.isError = "";
     });
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchChannelList.fulfilled, (state, action) => {
@@ -38,7 +42,8 @@ const channelInfoSlice = createSlice({
       // Add user to the state array
       state.isLoading = false;
       state.channelData = [];
-      state.isError = action.error.message;
+      state.isError = action.payload;
+      console.log("Lỗi thực tế nhận được:", action);
     });
   },
 });

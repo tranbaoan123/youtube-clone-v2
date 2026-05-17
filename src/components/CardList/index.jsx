@@ -32,7 +32,7 @@ const CardList = () => {
   }, [categoryId]);
 
   useEffect(() => {
-    dispatch(fetchChannelList(channelIdString));
+    dispatch(fetchChannelList({ channelIdString }));
   }, [channelIdString, categoryId]);
   let mergedData = [];
   mergedData =
@@ -55,11 +55,12 @@ const CardList = () => {
       fetchHomeVideoList({ categoryId, pageToken: homeData.nextPageToken }),
     );
   };
-  console.log(homeErrorLoading);
 
   if (homeErrorLoading || channelDataError) {
     return (
-      <div className="text-center text-red-700">Error: {homeErrorLoading}</div>
+      <div className="text-center text-red-700">
+        Error: {homeErrorLoading || channelDataError}
+      </div>
     );
   }
   return (

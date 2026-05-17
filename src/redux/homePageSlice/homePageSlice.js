@@ -10,13 +10,19 @@ const initialState = {
 };
 export const fetchHomeVideoList = createAsyncThunk(
   "homepage/fetchHomeVideoList",
-  async ({ categoryId, pageToken }) => {
-    const response = await api.get(
-      `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=5&regionCode=us&${categoryId !== "" ? `videoCategoryId=${categoryId}` : ""}${pageToken ? `pageToken=${pageToken}` : ""}&key=${
-        import.meta.env.VITE_YOUTUBE_API_KEY
-      }`,
-    );
-    return response.data;
+  async ({ categoryId, pageToken }, thunkAPI) => {
+    try {
+      const response = await api.get(
+        `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=5&regionCode=us&${categoryId !== "" ? `videoCategoryId=${categoryId}` : ""}${pageToken ? `pageToken=${pageToken}` : ""}&key=${
+          import.meta.env.VITE_YOUTUBE_API_KEY
+        }`,
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error?.message || "Error with loading data!";
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
   },
 );
 const homePageSlice = createSlice({
@@ -27,7 +33,6 @@ const homePageSlice = createSlice({
     builder.addCase(fetchHomeVideoList.pending, (state) => {
       // Add user to the state array
       state.isLoading = true;
-      state.isError = false;
     });
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchHomeVideoList.fulfilled, (state, action) => {
@@ -47,7 +52,8 @@ const homePageSlice = createSlice({
         items: [],
         nextPageToken: null,
       };
-      state.isError = action.error.message;
+      state.isError = action.payload;
+      console.log("Lỗi thực tế nhận được:", action);
     });
   },
 });
