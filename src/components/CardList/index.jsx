@@ -11,6 +11,7 @@ const CardList = () => {
   const { categoryId } = useOutletContext();
   const homeData = useSelector((state) => state.homePage.homeData);
   const homeDataLoading = useSelector((state) => state.homePage.isLoading);
+  const homeDataError = useSelector((state) => state.homePage.errorMessage);
   const channelData = useSelector((state) => state.channelInfo.channelData);
   const channelDataLoading = useSelector(
     (state) => state.channelInfo.isLoading,
@@ -42,7 +43,11 @@ const CardList = () => {
       }
     });
   console.log(categoryId);
-
+  if (homeDataError) {
+    return (
+      <div className="text-red-500 font-bold text-center">{homeDataError}</div>
+    );
+  }
   return (
     <div className="mt-4 grid grid-cols-3 gap-4">
       {homeDataLoading || channelDataLoading ? (
